@@ -1,6 +1,6 @@
 import httpStatus from 'http-status-codes';
 import { userServices } from './user.service';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -48,8 +48,33 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getMe = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const decodedToken = req.user as JwtPayload
+    const result = await userServices.getMe(decodedToken.userId);
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.CREATED,
+        message: "Your profile Retrieved Successfully",
+        data: result.data
+    })
+})
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getSingleUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const result = await userServices.getSingleUser(id);
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.CREATED,
+        message: "User Retrieved Successfully",
+        data: result.data
+    })
+})
+
 export const UserControllers = {
   createUser,
   updateUser,
   getAllUsers,
+  getMe,
+  getSingleUser
 };

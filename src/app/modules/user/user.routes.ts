@@ -21,7 +21,8 @@ router.patch(
   multerUpload.single('file'),
   UserControllers.updateUser,
 );
-
-router.get('/all-users', checkAuth(Role.ADMIN, Role.ADMIN), UserControllers.getAllUsers);
+router.get("/me", checkAuth(...Object.values(Role)), UserControllers.getMe)
+router.get("/:id", checkAuth(Role.ADMIN), UserControllers.getSingleUser)
+router.get('/all-users', checkAuth(Role.ADMIN), UserControllers.getAllUsers);
 
 export const UserRoutes = router;
