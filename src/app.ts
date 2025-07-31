@@ -7,6 +7,7 @@ import envVars from './app/config/env';
 import "./app/config/passport";
 import notFound from './app/middlewares/notFound';
 import { Routes } from './app/router';
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 
 const app = express()
 
@@ -40,6 +41,7 @@ app.get("/", (req: Request, res: Response) => {
 })
 
 // Error Handler
+app.use(globalErrorHandler)
 app.use(notFound);
 
 export default app
